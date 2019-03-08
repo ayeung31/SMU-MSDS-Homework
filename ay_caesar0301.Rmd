@@ -1,0 +1,321 @@
+---
+title: "Caesar0301"
+author: "Anthony Yeung"
+date: "February 21, 2019"
+output: html_document
+---keep_me:TRUE
+
+
+###Question 1
+
+####GITHUB clone from repo.
+
+
+```
+AY@DESKTOP-DNHT5NC MINGW64 ~                                                                                                                                                
+$ cd desktop                                                                                                                                                                
+                                                                                                                                                                            
+AY@DESKTOP-DNHT5NC MINGW64 ~/desktop                                                                                                                                        
+$ git clone https://github.com/caesar0301/awesome-public-datasets                                                                                                           
+Cloning into 'awesome-public-datasets'...                                                                                                                                   
+remote: Enumerating objects: 9, done.                                                                                                                                       
+remote: Counting objects: 100% (9/9), done.                                                                                                                                 
+remote: Compressing objects: 100% (7/7), done.                                                                                                                              
+remote: Total 1710 (delta 4), reused 6 (delta 2), pack-reused 1701                                                                                                          
+Receiving objects: 100% (1710/1710), 637.10 KiB | 554.00 KiB/s, done.                                                                                                       
+Resolving deltas: 100% (1015/1015), done.                                                                                                                                   
+                                                                                                                                                                           
+AY@DESKTOP-DNHT5NC MINGW64 ~/desktop                                                                                                                                        
+
+```
+
+
+
+###Question 2
+
+####The following is the titanic.csv file using read.csv function
+
+```
+Q2A
+
+titanic <- read.csv("C:/Users/AY/Desktop/titanic.csv")
+titanic
+str(titanic)
+```
+
+####Counting Femal & Male passengers
+
+####create a dummy variable "count" to count female and male passengers
+
+```
+titanic[,7]*0+1
+Count <- titanic[,7]*0+1
+Count
+
+titanic_new <- cbind(titanic,Count)
+titanic_new
+
+```
+
+####Calculate the number of female and male on Titantic
+
+```
+aggregate(Count~Sex,titanic_new,sum)
+
+mf<- aggregate(Count~Sex,titanic_new,sum)
+mf
+
+```
+####The following is the frequency  plot of the female passengers
+````
+female<- c(314)
+female
+
+plot(female, xlab="Femal Titanic Passengers", ylab="Number", main="Gender",col="red")
+
+````
+
+####The following is the frequency plot of Male passenger
+```
+male<- c(577)
+male
+
+plot(male,xlab="Male Titanic Passengers", ylab="Number", main="Gender",col="blue")
+
+```
+
+####Means of Age, Fare, Survival use apply function
+
+```
+#Mean age
+
+mean(titanic$Age,na.rm=TRUE)
+round(apply(titanic[6],2,mean,na.rm=TRUE),digit=0)
+
+
+#Mean Fare
+
+mean(titanic$Fare,na.rm=TRUE)
+round(apply(titanic[10],2,mean,na.rm=TRUE),digit=0)
+
+
+#Mean Survived
+
+titanic$Survived = as.integer(titanic$Survived)
+mean(titanic$Survived, na.rm=TRUE)
+round(mean(titanic$Survived),digit=0)
+
+```
+
+
+
+###Question 3
+#####Convert column factor into number by colClasses="numeric"
+
+```
+sleep <- read.csv("C:/Users/AY/Desktop/sleep_data_01 (1).csv", header=TRUE, colClasses="numeric")
+str(sleep)
+
+```
+####Median Age, Duration of sleep, RSES
+
+```
+#Median Age
+median_age <- median(sleep$Age, na.rm=TRUE)
+median_age
+
+
+#Duration of sleep
+min_duration <-min(sleep$Duration, na.rm=TRUE)
+min_duration
+
+max_duration <-max(sleep$Duration, na.rm=TRUE)
+max_duration
+
+#RSES mean & standard deviation
+mean_RSES <- mean(sleep$RSES, na.rm=TRUE)
+mean_RSES
+
+sd_RSES <- sd(sleep$RSES, na.rm=TRUE)
+sd_RSES
+
+```
+####Data Frame
+
+```
+new_duration <-c((max_duration+min_duration))/2
+new_duration
+
+report <- data.frame(median_age, mean_RSES/5, sd_RSES/5, new_duration)
+report
+```
+
+####Round the report to create a single number
+```
+round_report<- round(report, digit=0)
+round_report
+```
+
+####Change column names
+
+```
+
+names(round_report)
+
+names(round_report)[names(round_report)=="median_age"] <- "MedianAge"
+round_report
+
+names(round_report)[names(round_report)=="mean_RSES.5"] <- "SelfEstem"
+round_report
+
+names(round_report)[names(round_report)=="sd_RSES.5"] <- "SE_SD"
+round_report
+
+names(round_report)[names(round_report)=="new_duration"] <- "DurationRange"
+round_report
+
+
+
+```
+
+####Round the new data frame report to 2 digit
+
+```
+round(round_report, digit=2)
+
+
+
+```
+
+
+
+
+###Question 4
+
+#####install 5-30 -8 packages from github
+
+```
+install.packages("fivethirtyeight")
+library(fivethirtyeight)
+
+
+# To see a list of all data sets:
+data(package = "fivethirtyeight")
+```
+
+
+########################################
+
+
+
+####22nd data set as "df"
+
+```
+df <- college_all_ages
+df
+
+```
+
+
+
+####URL
+
+```
+https://fivethirtyeight.com/features/the-economic-guide-to-picking-a-college-major/
+
+
+The Economic Guide To Picking A College Major 
+
+
+```
+
+
+####dimmension data frame college_all_ages
+```
+dim(college_all_ages)
+
+```
+
+####column names of the Data Frame (college_all_ages)
+
+```
+colnames(college_all_ages)
+
+```
+
+
+
+###Question 5
+
+####count the column
+
+```
+ncol(college_all_ages)
+
+```
+
+####unique major_category
+
+####major_category
+
+```
+df$major_category
+```
+
+####Create dummy variable to count major_category
+
+```
+count <- c(1)
+count
+df_new <- cbind(df, count)
+df_new
+```
+
+####Count unique major 
+```
+mc_aggregate<-aggregate(count~major_category,df_new,sum)
+mc_aggregate
+
+nrow(mc_aggregate)
+
+```
+
+
+
+
+
+
+
+
+
+####Bar Plot
+```
+mc_aggregate$major_category
+
+mc_aggregate
+
+
+table(mc_aggregate)
+
+
+
+
+
+
+par(las=2)
+barplot(mc_aggregate$count, names.arg=mc_aggregate$major_category, xlab="Count",ylab="Major Category", main="Major Category & Median Pay", horiz=TRUE,col.main="red", col="dark red",cex.axis=0.8)
+
+```
+
+
+
+
+
+
+
+````
+
+
+````
+
+
