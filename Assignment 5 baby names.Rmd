@@ -1,0 +1,244 @@
+---
+title: "Assignment 5 Baby Names"
+author: "Anthony Yeung"
+date: "March 8, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+
+###**Top 10 Popular Baby Girl Names**
+#### Call library
+
+```
+library(dplyr)
+library(regexSelect)
+library(ggplot2)
+library(tidyverse)
+
+```
+
+###**Import yob2016 txt file into data frame**
+```
+
+df2016 <- read.csv("C:/Users/AY/Desktop/yob2016.txt", header=FALSE, sep=";")
+df2016
+
+
+```
+
+
+####Summary and Structure of the data frame
+
+```
+
+summary(df2016)
+
+str(df2016)
+
+```
+
+####Renaming df2016
+
+```
+names(df2016)<- c("FirstName","Gender","Number")
+head(df2016,6)
+
+
+```
+
+
+####Find the yyy position by using grep (value=FALSE)
+
+```
+grep("yyy$",df2016$FirstName,value=FALSE)
+
+#### The mistake in located ar row 212
+
+####Find the yyy name by using grep(value=TRUE)
+
+
+grep("yyy$",df2016$FirstName,value=TRUE)
+
+#### The name is Fionayyy
+
+summary(df2016)
+
+
+```
+
+####Delete the wrong observation row 212 from df2016
+####Check result after deleting
+
+```
+df2016<- df2016[-c(212),]
+
+df2016[210:220,]
+```
+
+####Store data in Y2016 data frame
+
+```
+y2016<- df2016
+
+```
+
+####Check the data from rows 210 to 220
+
+```
+
+y2016[210:220, ]
+
+```
+
+###**Import 2015 data set**
+
+```
+
+y2015 <- read.csv("C:/Users/AY/Desktop/yob2015.txt", header=FALSE)
+y2015
+
+head(y2015, 10)
+
+```
+
+####Change the column names of yob2015
+
+```
+names(y2015)<- c("FirstName","Gender","Number")
+head(y2015,6)
+
+```
+
+####compare 2015 and 2016 data set, first and last 10 rows
+
+```
+head(df2016, 10)
+head(y2015,10)
+
+tail(df2016,10)
+tail(y2015,10)
+
+```
+
+####**Merge 2015 & 2016 data by FirstName**
+
+```
+final<- merge(y2015,y2016,by="FirstName")
+final
+
+
+str(final)
+
+head(final,6)
+
+```
+
+####Check for NA in final data frame
+
+```
+any(is.na(final))
+
+####FALSE, i.e.no NA
+
+any(is.na(y2015))
+
+####FALSE, i.e.no NA
+
+any(is.na(y2016))
+
+####FALSE, i.e.no NA
+
+```
+
+####Add total_number to the final data frame
+
+```
+final$total_number <-final[,3] + final[,5]
+
+head(final,5)
+
+sum(final$total_number)
+
+####Total number is: 11404228
+
+```
+
+
+
+
+####Sort by total_number i.e. final$total-number
+
+
+```
+
+final_order <- final[order(-total_number),]
+
+```
+
+####Top 10 most popular names
+
+
+```
+head(final_order,10)
+
+````
+###**Top 10 most popular names**
+
+
+```
+Emma, Olivia, Noah, Liam, Sophia, Ava, Mason, Willian, Jacob, Isabella
+
+```
+
+####Filter the data frame final_order by filter command to get girl's names
+ 
+```
+
+list_girl<- filter(final_order, Gender.x=="F" & Gender.y=="F")
+list_girl 
+
+head(list_girl,10)
+
+```
+####subset the top 10 girl name to a subset list_girl_10
+
+
+```
+list_girl_10<- list_girl[(1:10),]
+list_girl_10
+
+list_girl_names <- list_girl_10[,1]
+list_girl_names
+
+```
+
+####put the top 10 girl's name into a data frame top_10_girl_names
+
+```
+top_10_girl_names <- data.frame(list_girl_names)
+top_10_girl_names
+
+```
+
+
+###**Write top_10_girl_names data frame to csv file as homework_list_girl**
+
+```
+write.csv(top_10_girl_names,"homework_list_girl.csv")
+
+```
+   
+
+   
+   
+   
+  
+
+
+
